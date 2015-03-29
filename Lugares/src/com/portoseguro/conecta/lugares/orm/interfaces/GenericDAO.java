@@ -31,6 +31,9 @@ public abstract class GenericDAO<T> extends DAO<T> implements IGenericDAO<T> {
 			throw e;
 		} finally {
 			finalizar();
+			
+			getBD().rawQuery("select * from "+getNomeTabela(), new String[]{}).getCount();
+			finalizar();
 		}
 		return insertId;
 	}
@@ -38,7 +41,7 @@ public abstract class GenericDAO<T> extends DAO<T> implements IGenericDAO<T> {
 	public void atualizar(ContentValues values, String whereClause, String[] whereArgs) throws SysErr{
 		try{
 			iniciarTransacao();
-			getBD(TIPO_BD_ESCRITA).update(getNomeTabela(), values, whereClause, whereArgs);
+			getBD().update(getNomeTabela(), values, whereClause, whereArgs);
 			commit();
 			finalizarTransacao();
 		} catch (SysErr e){

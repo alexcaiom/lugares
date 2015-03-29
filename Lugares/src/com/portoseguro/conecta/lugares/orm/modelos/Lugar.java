@@ -1,7 +1,10 @@
 package com.portoseguro.conecta.lugares.orm.modelos;
 
+import com.j256.ormlite.field.DatabaseField;
+
 public class Lugar {
 
+	@DatabaseField(id=true, generatedId=true)
 	private int id;
 	private String nome;
 	private Long telefone;
@@ -22,7 +25,7 @@ public class Lugar {
 		this.hashTags = hashTags;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 

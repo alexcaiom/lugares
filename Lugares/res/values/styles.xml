@@ -23,5 +23,16 @@
            parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">#63a973</item>
     </style>
+    
+    <style name="divisoria">
+	    <item name="android:layout_width">match_parent</item>
+	    <item name="android:layout_height">1dp</item>
+	    <item name="android:background">?android:attr/listDivider</item>
+	</style>
+	
+    <style name="invisivel">
+        
+        
+    </style>
 
 </resources>

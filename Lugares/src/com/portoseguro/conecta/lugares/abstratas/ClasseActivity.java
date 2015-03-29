@@ -3,18 +3,23 @@
  */
 package com.portoseguro.conecta.lugares.abstratas;
 
-import com.portoseguro.conecta.lugares.interfaces.ClasseActivityInterface;
-import com.portoseguro.conecta.lugares.utils.Dialogos;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Display;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
+
+import com.portoseguro.conecta.lugares.R;
+import com.portoseguro.conecta.lugares.interfaces.ClasseActivityInterface;
+import com.portoseguro.conecta.lugares.utils.Dialogos;
 
 /**
  * @author Alex
@@ -23,19 +28,42 @@ import android.widget.Toast;
 public abstract class ClasseActivity extends Activity implements ClasseActivityInterface{
 
 	public Contexto contexto;
+	public int idTela;
+	public View tela;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		super.onCreate(savedInstanceState);
+		setContentView(idTela);
 		contexto = new Contexto(this);
 	}
 	
+	public void executarAnimacao(Animation animacao){
+		tela = mapear(R.id.conteiner);
+		tela.setAnimation(animacao);
+		tela.animate().start();
+	}
+	
+	public void executarAnimacao(int idAnimacao){
+		tela = mapear(R.id.conteiner);
+		Animation animacao = getAnimacao(idAnimacao);
+		tela.setAnimation(animacao);
+		tela.animate().start();
+	}
+	
+	public Animation getAnimacao(int animacao) {
+		return AnimationUtils.loadAnimation(getContexto().getContexto(), animacao);
+	}
+
 	public void irPara(Class tela, Bundle parametros){
 		Intent intencao = new Intent(this, tela);
 		if(parametros != null && !parametros.isEmpty()){
 			intencao.putExtras(parametros);
 		}
+		
+		
+		
 		startActivity(intencao);
 	}
 	
@@ -93,7 +121,7 @@ public abstract class ClasseActivity extends Activity implements ClasseActivityI
 	}
 	
 	public void exibirMensagemExcecao(Throwable e){
-		Dialogos.Alerta.exibirMensagemErro(e, ClasseActivity.this, null);
+		Dialogos.Alerta.exibirMensagemErro(e, getContexto(), null);
 	}
 	
 	@Override
@@ -115,8 +143,8 @@ public abstract class ClasseActivity extends Activity implements ClasseActivityI
 	}
 	
 
-	public void notificar(String mensagem, Bundle parametros) {
-		Dialogos.Notificacao.exibir(contexto.getContexto(), mensagem, parametros);
+	public void notificar(int icone, String titulo, String mensagem, Bundle parametros) {
+		Dialogos.Notificacao.exibir(contexto.getContexto(), icone, titulo, mensagem, parametros);
 	}
 	
 	public void log(String textoParaLog) {
@@ -125,6 +153,10 @@ public abstract class ClasseActivity extends Activity implements ClasseActivityI
 	
 	public Contexto getContexto(){
 		return contexto;
+	}
+	
+	public void mostrarBotaoHome() {
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 	
 	public Point getTamanhoTela(){
@@ -136,6 +168,16 @@ public abstract class ClasseActivity extends Activity implements ClasseActivityI
 	
 	public <T> T mapear(int id) {
 		return (T) super.findViewById(id);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 }

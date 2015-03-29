@@ -3,23 +3,28 @@
  */
 package com.portoseguro.conecta.lugares.utils;
 
-import com.portoseguro.conecta.lugares.R;
-import com.portoseguro.conecta.lugares.abstratas.Classe;
-import com.portoseguro.conecta.lugares.abstratas.ClasseActivity;
-import com.portoseguro.conecta.lugares.abstratas.ClasseFragmentoActivity;
-import com.portoseguro.conecta.lugares.abstratas.Contexto;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+
+import com.portoseguro.conecta.lugares.MainActivity;
+import com.portoseguro.conecta.lugares.R;
+import com.portoseguro.conecta.lugares.abstratas.Classe;
+import com.portoseguro.conecta.lugares.abstratas.ClasseActivity;
+import com.portoseguro.conecta.lugares.abstratas.ClasseFragmentoActivity;
+import com.portoseguro.conecta.lugares.abstratas.Contexto;
 
 
 /**
@@ -86,8 +91,8 @@ public class Dialogos extends Classe{
 			dialogo.dismiss();
 		}
 
-		public static void exibirMensagemErro(Throwable e, Context contexto, OnClickListener acao) {
-			exibirMensagemInformacao(contexto, false, "Um erro ocorreu: \n"+e.getMessage(), "Ocorreu um erro durante a operação", acao);
+		public static void exibirMensagemErro(Throwable e, Contexto contexto, OnClickListener acao) {
+			exibirMensagemInformacao(contexto, false, "Um erro ocorreu: \n"+e.getMessage(), acao);
 		}
 	}
 	
@@ -160,25 +165,25 @@ public class Dialogos extends Classe{
 	
 	public static class Notificacao{
 
-		public static void exibir(Activity tela, String string, Bundle parametros) {
-			/*NotificationManager notificationManager ;
+		public static void exibir(ClasseActivity tela, int icone, String titulo, String texto, Bundle parametros) {
+			NotificationManager notificationManager ;
 			String serName = Context.NOTIFICATION_SERVICE ;
 			notificationManager = ( NotificationManager ) tela.getSystemService( serName ) ;
 
-			int icon = R.drawable.btn_star_big_on_selected ;
+			int icon = R.drawable.icon_action_bar ;
 			String tickerText = "1. Minha notificacao" ;
 			long when = System.currentTimeMillis( ) ;
-			Notification notification = new Notification( icon, tickerText, when ) ;
+			Notification notification = new Notification( icone, texto, when ) ;
 
-			String extendedTitle = "2. Meu titulo" ;
-			String extendedText = "3. Essa � uma mensagem muito importante" ;
+			/*String extendedTitle = "2. Meu titulo" ;
+			String extendedText = "3. Essa eh uma mensagem muito importante" ;*/
 
-			Intent intent = new Intent( tela.getApplicationContext( ), CadastroMovimentoActivity.class ) ;
+			Intent intent = new Intent( tela.getApplicationContext( ), MainActivity.class ) ;
 			intent.putExtras(parametros);
 			PendingIntent launchIntent = PendingIntent.getActivity( tela, 0, intent, 0 ) ;
-			notification.setLatestEventInfo( tela.getApplicationContext( ), extendedTitle,	extendedText, launchIntent ) ;
+			notification.setLatestEventInfo( tela, titulo,	texto, launchIntent ) ;
 			int notificationId = 1 ;
-			notificationManager.notify( notificationId, notification ) ;*/
+			notificationManager.notify( notificationId, notification ) ;
 			
 		}
 		
