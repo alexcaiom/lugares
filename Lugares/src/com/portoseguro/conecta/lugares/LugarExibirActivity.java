@@ -2,6 +2,8 @@ package com.portoseguro.conecta.lugares;
 
 import java.util.List;
 
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +15,6 @@ import android.widget.TextView;
 import com.portoseguro.conecta.lugares.abstratas.ClasseActivity;
 import com.portoseguro.conecta.lugares.excecoes.Erro;
 import com.portoseguro.conecta.lugares.orm.bo.BOLugar;
-import com.portoseguro.conecta.lugares.orm.dao.DAOLugar;
 import com.portoseguro.conecta.lugares.orm.modelos.Lugar;
 import com.portoseguro.conecta.lugares.utils.Constantes;
 import com.portoseguro.conecta.lugares.utils.Dialogos;
@@ -22,7 +23,7 @@ import com.portoseguro.conecta.lugares.utils.UtilsTelefone;
 
 public class LugarExibirActivity extends ClasseActivity {
 	
-	TextView lblNome, lblTelefone, lblMetaProximaViagem, lblDataProximaViagem, lblHashTag;
+	TextView lblNome, lblTelefone, lblMetaProximaViagem, lblDataProximaViagem, lblHashTag, lblTelefoneInstrucoes;
 	Button btnAtualizar;
 	Lugar lugar = null;
 	static final int CODIGO_REQUISICAO_EDICAO_LUGAR = 1;
@@ -63,6 +64,7 @@ public class LugarExibirActivity extends ClasseActivity {
 		lblMetaProximaViagem 	= mapear(R.id.lugar_lblMetaProximaViagem);
 		lblDataProximaViagem 	= mapear(R.id.lugar_lblDataProximaViagem);
 		lblHashTag 				= mapear(R.id.lugar_lblHashtag);
+		lblTelefoneInstrucoes   = mapear(R.id.lugar_lblTelefoneInstrucoes);
 		
 		btnAtualizar = mapear(R.id.lugar_btnAtualizar);
 		try {
@@ -141,5 +143,22 @@ public class LugarExibirActivity extends ClasseActivity {
 			}
 		});
 		
+		lblTelefoneInstrucoes.animate()
+							.setDuration(5000)
+							.alphaBy(1.0f)
+							.alpha(0.0f)
+							.setListener(new AnimatorListener() {
+								@Override
+								public void onAnimationStart(Animator animation) {}
+								@Override
+								public void onAnimationRepeat(Animator animation) {}
+								@Override
+								public void onAnimationEnd(Animator animation) {
+									lblTelefoneInstrucoes.setVisibility(View.GONE);
+								}
+								@Override
+								public void onAnimationCancel(Animator animation) {}
+							})
+							.start();
 	}
 }

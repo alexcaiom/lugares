@@ -23,4 +23,6 @@
     <string name="btn_Atualizar">Atualizar Informacoes</string>
     <string name="btn_Limpar">Limpar</string>
     <string name="btn_Salvar">Salvar</string>
+    
+    <string name="lbl_telefone_instrucao">Pressione o telefone ao lado para ligar</string>
 </resources>

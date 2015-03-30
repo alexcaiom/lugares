@@ -53,12 +53,27 @@
 	                android:layout_height="wrap_content"
 	                android:text="@string/lbl_telefone_exibicao"
 	                android:textAppearance="?android:attr/textAppearanceLarge" />
-	            <TextView
-	                android:id="@+id/lugar.lblTelefone"
-	                android:layout_width="wrap_content"
+	            <LinearLayout 
+	                android:orientation="horizontal"
+	                android:layout_width="match_parent"
 	                android:layout_height="wrap_content"
-	                android:textColor="@android:color/darker_gray"
-	                android:textAppearance="?android:attr/textAppearanceMedium" />
+	                >
+	                <TextView
+		                android:id="@+id/lugar.lblTelefone"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:textColor="@android:color/darker_gray"
+		                android:textAppearance="?android:attr/textAppearanceMedium" />
+	                <TextView
+		                android:id="@+id/lugar.lblTelefoneInstrucoes"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:textColor="@android:color/darker_gray"
+		                android:text="@string/lbl_telefone_instrucao"
+		                android:layout_marginLeft="15dip"
+		                android:textAppearance="?android:attr/textAppearanceMedium" />
+	            </LinearLayout>
+	            
 	        </LinearLayout>
 			<!-- Linha Meta para Proxima Viagem -->
 	        <LinearLayout
