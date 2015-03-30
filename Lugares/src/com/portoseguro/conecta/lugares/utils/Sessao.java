@@ -26,4 +26,10 @@ public class Sessao {
 		return parametros.containsKey(chave);
 	}
 	
+	public static final void removerParametro(String chave){
+		if (temParametro(chave)) {
+			parametros.remove(chave);
+		}
+	}
+	
 }

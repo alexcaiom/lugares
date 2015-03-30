@@ -45,11 +45,19 @@ public abstract class ClasseActivity extends Activity implements ClasseActivityI
 		tela.animate().start();
 	}
 	
-	public void executarAnimacao(int idAnimacao){
+	public void executarAnimacao(int idAnimacao, Integer tempoEmSegundos){
 		tela = mapear(R.id.conteiner);
 		Animation animacao = getAnimacao(idAnimacao);
 		tela.setAnimation(animacao);
+		if (existe(tempoEmSegundos)) {
+			int segundo = 1000; //milissegundos
+			animacao.setDuration(tempoEmSegundos*segundo);
+		}
 		tela.animate().start();
+	}
+	
+	public void executarAnimacao(int idAnimacao){
+		executarAnimacao(idAnimacao, null);
 	}
 	
 	public Animation getAnimacao(int animacao) {
@@ -174,10 +182,15 @@ public abstract class ClasseActivity extends Activity implements ClasseActivityI
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			NavUtils.navigateUpFromSameTask(this);
+			retornarATelaPai();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void retornarATelaPai() {
+		NavUtils.navigateUpFromSameTask(this);
+		executarAnimacao(R.anim.slide_up, 2);
 	}
 
 }

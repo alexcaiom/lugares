@@ -5,9 +5,10 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
+import android.widget.ImageView;
 
 import com.portoseguro.conecta.lugares.abstratas.ClasseActivity;
+import com.portoseguro.conecta.lugares.utils.UtilsImagem;
 
 public class SplashActivity extends ClasseActivity {
 
@@ -18,7 +19,11 @@ public class SplashActivity extends ClasseActivity {
 		idTela = R.layout.activity_splash;
 		super.onCreate(savedInstanceState);
 		ocultarBarraDeAcoes();
+		ImageView img = mapear(R.id.splash_img);
+		UtilsImagem.loadBitmap(contexto, R.drawable.splash, img);
 		executarAnimacao(R.anim.fade_in);
+		img.setAnimation(getAnimacao(R.anim.fade_in));
+		img.animate().setDuration(2000).start();
 		
         new Handler().postDelayed(new Runnable() {
               

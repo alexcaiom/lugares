@@ -1,8 +1,10 @@
 package com.portoseguro.conecta.lugares.orm.modelos;
 
+import java.io.Serializable;
+
 import com.j256.ormlite.field.DatabaseField;
 
-public class Lugar {
+public class Lugar implements Serializable {
 
 	@DatabaseField(id=true, generatedId=true)
 	private int id;

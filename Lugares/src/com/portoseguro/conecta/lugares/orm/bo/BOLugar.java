@@ -22,7 +22,7 @@ public class BOLugar extends BO<Lugar> {
 
 	@Override
 	public void alterar(Lugar o) throws Erro {
-		
+		new DAOLugar(getContexto()).atualizar(o);
 	}
 
 	@Override

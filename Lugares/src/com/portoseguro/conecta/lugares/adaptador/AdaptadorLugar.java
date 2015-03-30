@@ -1,85 +1,74 @@
 package com.portoseguro.conecta.lugares.adaptador;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.portoseguro.conecta.lugares.R;
 import com.portoseguro.conecta.lugares.abstratas.Contexto;
 import com.portoseguro.conecta.lugares.abstratas.Lugares;
-import com.portoseguro.conecta.lugares.orm.modelos.Lugar;
+import com.portoseguro.conecta.lugares.utils.UtilsImagem;
 
 public class AdaptadorLugar extends ArrayAdapter<Lugares> {
 
 	private Contexto contexto;
 	private List<Lugares> lugares;
-	
+
 	public AdaptadorLugar(Contexto contexto, List<Lugares> lugares) {
 		super(contexto.getContexto(), R.id.lugares_lista);
 		this.contexto = contexto;
 		this.lugares = lugares;
 	}
-	
+
 	@SuppressLint("NewApi")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflador = contexto.getContexto().getLayoutInflater();
 		final RelativeLayout item = (RelativeLayout) inflador.inflate(R.layout.item_lugar, null);
-		
-		TextView label = (TextView) item.findViewById(R.id.item_lugar_label);
-//		String nome = lugares.get(position).getNome();
-//		String hashTags = "";
-//		if (lugares.get(position).getHashTags().length() > 3) {
-//			hashTags = " - " + lugares.get(position).getHashTags();
-//		} 
-//		label.setText(nome + hashTags);
-//		label.setText(contexto.getContexto().getString(lugares.get(position).getDescricao()));
-		
-		//Adicionando a acao de selecionar
-		item.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-			}
-		});
-		
-		ImageView imagem = (ImageView) item.findViewById(R.id.item_lugar_img);
-		
-		imagem.setImageResource(lugares.get(position).getImg());
-		
-//		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//			Drawable d = contexto.getContexto().getResources().getDrawable(lugares.get(position).getImg());
-//			item.setBackground(d);
 
-//			imagem.setImageResource(lugares.get(position).getImg());
-//		} else {
-//			item.setBackgroundDrawable(contexto.getContexto().getResources().getDrawable(lugares.get(position).getImg()));
-//			imagem.setBackgroundDrawable(contexto.getContexto().getResources().getDrawable(lugares.get(position).getImg()));
-//		}
-		
+		ImageView imagem = (ImageView) item.findViewById(R.id.item_lugar_img);
+
 		Animation animacao = AnimationUtils.loadAnimation(contexto.getContexto(), R.anim.zoom_in);
-		item.setAnimation(animacao);
+//		imagem.setImageResource(lugares.get(position).getImg());
 		
+//		BitmapFactory.Options options = new BitmapFactory.Options();
+//		options.inJustDecodeBounds = true;
+//		BitmapFactory.decodeResource(contexto.getContexto().getResources(), imagem.getId(), options);
+//		int imageHeight = options.outHeight;
+//		int imageWidth = options.outWidth;
+//		String imageType = options.outMimeType;
+//		Bitmap bitmap = decodeSampledBitmapFromResource(contexto.getContexto().getResources(), lugares.get(position).getImg(), imageWidth, imageHeight);
+		
+		
+		
+		UtilsImagem.loadBitmap(contexto, lugares.get(position).getImg(), imagem);
+//		imagem.setImageBitmap(bitmap);
+		
+		
+		imagem.setAnimation(animacao);
+
+		imagem.animate().start();
+
 		ViewHolder holder = new ViewHolder();
-		holder.label = label;
+		holder.imgLugar = imagem;
 		if (convertView == null) {
 			convertView = item;
 		}
 		convertView.setTag(holder);
+		
 		return convertView;
 	}
 	
@@ -87,16 +76,14 @@ public class AdaptadorLugar extends ArrayAdapter<Lugares> {
 	public int getCount() {
 		return lugares.size();
 	}
-	
+
 	@Override
 	public Lugares getItem(int position) {
 		return lugares.get(position);
 	}
-	
-	
+
 	static class ViewHolder {
-		  CheckBox imgChk;
-		  TextView label;
-		  ImageView imgCategoria;
+		ImageView imgLugar;
 	}
+	
 }

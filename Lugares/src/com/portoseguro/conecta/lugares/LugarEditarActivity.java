@@ -5,6 +5,7 @@ import java.util.GregorianCalendar;
 
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,14 +21,17 @@ import com.portoseguro.conecta.lugares.abstratas.ClasseActivity;
 import com.portoseguro.conecta.lugares.excecoes.Erro;
 import com.portoseguro.conecta.lugares.orm.bo.BOLugar;
 import com.portoseguro.conecta.lugares.orm.modelos.Lugar;
+import com.portoseguro.conecta.lugares.utils.Constantes;
 import com.portoseguro.conecta.lugares.utils.Dialogos;
 import com.portoseguro.conecta.lugares.utils.Sessao;
 import com.portoseguro.conecta.lugares.utils.UtilsData;
+import com.portoseguro.conecta.lugares.utils.UtilsTelefone;
 
 public class LugarEditarActivity extends ClasseActivity {
 
 	EditText 	txtNome, txtTelefone, txtMetaProximaViagem, txtDataProximaViagem, txtHashtag;
 	Button 		btnLimpar, btnSalvar;
+	Lugar lugar = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,18 @@ public class LugarEditarActivity extends ClasseActivity {
 		
 		btnLimpar 				= mapear(R.id.lugar_btnLimpar);
 		btnSalvar 				= mapear(R.id.lugar_btnSalvar);
+		
+		Bundle parametros = getIntent().getExtras();
+		if (existe(parametros) && parametros.containsKey(Constantes.LUGAR) && existe(parametros.getSerializable(Constantes.LUGAR))) {
+			lugar = (Lugar) parametros.getSerializable(Constantes.LUGAR);
+			
+			txtNome.setText(lugar.getNome());
+			txtTelefone.setText(lugar.getTelefone().toString());
+			txtMetaProximaViagem.setText(lugar.getLocalproximaViagem());
+			txtDataProximaViagem.setText(lugar.getDataProximaViagem());
+			txtHashtag.setText(lugar.getHashTags());
+		}
+		
 		carregarEventos();
 	}
 
@@ -121,7 +137,7 @@ public class LugarEditarActivity extends ClasseActivity {
 						if (existe(lugar)) {
 							avisar("Lugar salvo com sucesso", Toast.LENGTH_SHORT);
 							Sessao.addParametro("lugar", lugar);
-							onBackPressed();
+							retornarATelaPai();
 						}
 					} catch (Erro e) {
 						e.printStackTrace();
@@ -156,16 +172,47 @@ public class LugarEditarActivity extends ClasseActivity {
 
 	protected Lugar salvar() throws Erro {
 		String nome 				= txtNome.getText().toString();
-		Long telefone 				= Long.parseLong(txtTelefone.getText().toString());
+		
+		Long telefone 				= null;
+		boolean telefoneValido = false;
+		try{
+			boolean validarNumeroTelefone = UtilsTelefone.validarNumeroTelefone(txtTelefone.getText().toString());
+			if (validarNumeroTelefone) {
+				telefone = Long.parseLong(txtTelefone.getText().toString().trim());
+				telefoneValido = true;
+			}
+		}catch(Exception e){}
+		
+		if (!telefoneValido) {
+			txtTelefone.setText("");
+			android.content.DialogInterface.OnClickListener escutadorOk = new android.content.DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					txtTelefone.requestFocus();
+				}
+			};
+			Dialogos.Alerta.exibirMensagemInformacao(getContexto(), false, "Digite um numero de Telefone valido, com Codigo do Pais e Codigo de Area!", escutadorOk);
+			return null;
+		}
 		String localproximaViagem 	= txtMetaProximaViagem.getText().toString();
 		String dataProximaViagem 	= txtDataProximaViagem.getText().toString();
 		String hashTags 			= txtHashtag.getText().toString();
-		Lugar lugar = new Lugar()
-							.setNome(nome)
-							.setTelefone(telefone)
-							.setLocalproximaViagem(localproximaViagem)
-							.setDataProximaViagem(dataProximaViagem)
-							.setHashTags(hashTags);
+		
+		boolean estaEditando = existe(lugar);
+		if (estaEditando) {
+			lugar.setNome(nome)
+			.setTelefone(telefone)
+			.setLocalproximaViagem(localproximaViagem)
+			.setDataProximaViagem(dataProximaViagem)
+			.setHashTags(hashTags);
+		} else {
+			lugar = new Lugar()
+			.setNome(nome)
+			.setTelefone(telefone)
+			.setLocalproximaViagem(localproximaViagem)
+			.setDataProximaViagem(dataProximaViagem)
+			.setHashTags(hashTags);
+		}
 		lugar = new BOLugar(getContexto()).salvar(lugar);
 		return lugar;
 	}

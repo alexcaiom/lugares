@@ -1,21 +1,15 @@
 package com.portoseguro.conecta.lugares;
 
 import java.util.Arrays;
-import java.util.List;
 
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.animation.Animation;
 import android.widget.ListView;
 
 import com.portoseguro.conecta.lugares.abstratas.ClasseActivity;
 import com.portoseguro.conecta.lugares.abstratas.Lugares;
 import com.portoseguro.conecta.lugares.adaptador.AdaptadorLugar;
-import com.portoseguro.conecta.lugares.excecoes.Erro;
-import com.portoseguro.conecta.lugares.orm.bo.BOLugar;
-import com.portoseguro.conecta.lugares.orm.modelos.Lugar;
-import com.portoseguro.conecta.lugares.utils.Dialogos;
 
 
 public class MainActivity extends ClasseActivity {
@@ -48,44 +42,13 @@ public class MainActivity extends ClasseActivity {
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_info) {
-			imprimirLugares();
-		} else if (id == R.id.action_add) {
-			irPara(LugarEditarActivity.class);
+			irPara(LugarExibirActivity.class);
 		}
         return super.onOptionsItemSelected(item);
     }
     
-    private void imprimirLugares() {
-		try {
-			List<Lugar> lugares = new BOLugar(getContexto()).listar();
-			StringBuilder texto = new StringBuilder();
-			boolean primeiroItem = true;
-			if (existe(lugares)) {
-				for (Lugar lugar : lugares) {
-					if (!primeiroItem) {
-						texto.append(", ");
-					}
-					texto.append(lugar);
-					primeiroItem = false;
-				}				
-			}
-			
-			if (!texto.toString().isEmpty()) {
-				Dialogos.Alerta.exibirMensagemInformacao(getContexto(), false, texto.toString(), null);
-			} else {
-				Dialogos.Alerta.exibirMensagemInformacao(getContexto(), false, "Nenhum lugar cadastrado!", null);
-			}
-		} catch (Erro e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-
-
-	public void carregarTela() {
+    public void carregarTela() {
     	lista = (ListView) findViewById(R.id.lugares_lista);
-//    	List<Lugar> lugares = ;
 		lista.setAdapter(new AdaptadorLugar(getContexto(), Arrays.asList(Lugares.values())));
     }
     

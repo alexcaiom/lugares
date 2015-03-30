@@ -14,7 +14,8 @@
 
     <!-- Tela Exibicao de Lugar -->
     <string name="lbl_nome">Nome</string>
-    <string name="lbl_telefone">Telefone</string>
+    <string name="lbl_telefone_exibicao">Telefone</string>
+    <string name="lbl_telefone_edicao">Telefone (ex: 5511912345678)</string>
     <string name="lbl_meta_proxima_viagem">Meta para a Proxima Viagem</string>
     <string name="lbl_data_proxima_viagem">Data da Proxima Viagem</string>
     <string name="lbl_hashtag">Hashtag</string>

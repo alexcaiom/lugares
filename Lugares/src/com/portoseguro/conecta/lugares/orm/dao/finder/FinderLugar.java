@@ -28,7 +28,8 @@ public class FinderLugar extends Finder<Lugar> {
 				while (!cursor.isAfterLast()) {
 					Lugar l = new Lugar();
 					preencheVO(l);
-					lugares.add(l);				
+					lugares.add(l);	
+					cursor.moveToNext();
 				}
 			}
 		} catch (Exception e) {
@@ -48,7 +49,7 @@ public class FinderLugar extends Finder<Lugar> {
 			o.setId(cursor.getInt(cursor.getColumnIndex("id")));
 			o.setNome(cursor.getString(cursor.getColumnIndex("nome")));
 			o.setTelefone(cursor.getLong(cursor.getColumnIndex("telefone")));
-			o.setLocalproximaViagem(cursor.getString(cursor.getColumnIndex("localProximaViagem")));
+			o.setLocalproximaViagem(cursor.getString(cursor.getColumnIndex("localproximaViagem")));
 			o.setDataProximaViagem(cursor.getString(cursor.getColumnIndex("dataProximaViagem")));
 			o.setHashTags(cursor.getString(cursor.getColumnIndex("hashTags")));
 		}
